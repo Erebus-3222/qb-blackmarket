@@ -1,10 +1,10 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 --Events
-QBCore.Functions.CreateCallback('A-blackmarket:server:SetShopInv', function(_,cb)
+QBCore.Functions.CreateCallback('qb-blackmarket:server:SetShopInv', function(_,cb)
     local shopInvJson = LoadResourceFile(GetCurrentResourceName(), Config.ShopsInvJsonFile)
     cb(shopInvJson)
 end)
-RegisterNetEvent('A-blackmarket:server:SaveShopInv',function()
+RegisterNetEvent('qb-blackmarket:server:SaveShopInv',function()
     if not Config.UseTruckerJob then return end
     local shopinv = {}
     for k, v in pairs(Config.Locations) do
@@ -17,29 +17,29 @@ RegisterNetEvent('A-blackmarket:server:SaveShopInv',function()
     end
     SaveResourceFile(GetCurrentResourceName(), Config.ShopsInvJsonFile, json.encode(shopinv))
 end)
-RegisterNetEvent('A-blackmarket:server:UpdateShopItems', function(shop, itemData, amount)
+RegisterNetEvent('qb-blackmarket:server:UpdateShopItems', function(shop, itemData, amount)
     if not Config.UseTruckerJob then return end
     if not shop or not itemData or not amount then return end
     Config.Locations[shop].products[itemData.slot].amount -= amount
     if Config.Locations[shop].products[itemData.slot].amount < 0 then
         Config.Locations[shop].products[itemData.slot].amount = 0
     end
-    TriggerEvent('A-blackmarket:server:SaveShopInv')
-    TriggerClientEvent('A-blackmarket:client:SetShopItems', -1, shop, Config.Locations[shop].products)
+    TriggerEvent('qb-blackmarket:server:SaveShopInv')
+    TriggerClientEvent('qb-blackmarket:client:SetShopItems', -1, shop, Config.Locations[shop].products)
 end)
-RegisterNetEvent('A-blackmarket:server:RestockShopItems', function(shop)
+RegisterNetEvent('qb-blackmarket:server:RestockShopItems', function(shop)
     if not shop or not Config.Locations[shop].products then return end
     local randAmount = math.random(10, 50)
     for k in pairs(Config.Locations[shop].products) do
         Config.Locations[shop].products[k].amount += randAmount
     end
-    TriggerEvent('A-blackmarket:server:SaveShopInv')
-    TriggerClientEvent('A-blackmarket:client:RestockShopItems', -1, shop, randAmount)
+    TriggerEvent('qb-blackmarket:server:SaveShopInv')
+    TriggerClientEvent('qb-blackmarket:client:RestockShopItems', -1, shop, randAmount)
 end)
 local ItemList = {
     ["casinochips"] = 1,
 }
-RegisterNetEvent('A-blackmarket:server:sellChips', function()
+RegisterNetEvent('qb-blackmarket:server:sellChips', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local xItem = Player.Functions.GetItemByName("casinochips")
@@ -59,7 +59,7 @@ RegisterNetEvent('A-blackmarket:server:sellChips', function()
         QBCore.Functions.Notify(src, "You have no chips..")
     end
 end)
-RegisterNetEvent('A-blackmarket:server:SetShopList',function()
+RegisterNetEvent('qb-blackmarket:server:SetShopList',function()
     local shoplist = {}
     local cnt = 0
     for k, v in pairs(Config.Locations) do

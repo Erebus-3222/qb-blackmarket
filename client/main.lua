@@ -26,7 +26,7 @@ local function createBlips()
 end
 
 local function openShop(shop, data)
-    QBCore.Functions.TriggerCallback('A-blackmarket:server:SetShopInv', function(shopInvJson)
+    QBCore.Functions.TriggerCallback('qb-blackmarket:server:SetShopInv', function(shopInvJson)
         local function SetupItems(checkLicense)
             local products =  Config.Locations[shop].products
             local items = {}
@@ -70,7 +70,7 @@ local function openShop(shop, data)
             end
             return items
         end
-        TriggerServerEvent('A-blackmarket:server:SetShopList')
+        TriggerServerEvent('qb-blackmarket:server:SetShopList')
         local ShopItems = {}
         ShopItems.items = {}
         ShopItems.label = data["label"]
@@ -102,11 +102,11 @@ local function listenForControl()
     CreateThread(function()
         listen = true
         while listen do
-            TriggerServerEvent('A-blackmarket:server:SetShopList')
+            TriggerServerEvent('qb-blackmarket:server:SetShopList')
             if IsControlJustPressed(0, 38) then -- E
                 if inChips then
                     exports["qb-core"]:KeyPressed()
-                    TriggerServerEvent("A-blackmarket:server:sellChips")
+                    TriggerServerEvent("qb-blackmarket:server:sellChips")
                 else
                     exports["qb-core"]:KeyPressed()
                     openShop(currentShop, currentData)
@@ -158,7 +158,7 @@ local function createPeds()
                     {
                         num = 1,
                         type = "client",
-                        event = "A-blackmarket:OpenShop",
+                        event = "qb-blackmarket:OpenShop",
                         label = v["targetLabel"],
                         job = v.requiredJob,
                         gang = v.requiredGang
@@ -188,7 +188,7 @@ local function deletePeds()
     pedSpawned = false
 end
 
-RegisterNetEvent('A-blackmarket:OpenShop', function()
+RegisterNetEvent('qb-blackmarket:OpenShop', function()
     local BlackMarket = {
         {
             header = Config.Text['PedHeader'],
@@ -199,35 +199,35 @@ RegisterNetEvent('A-blackmarket:OpenShop', function()
             header = Config.Text['Pistols'],
             icon = Config.Icons['Pistol'],
             params = {
-                event = "A-blackmarket:PistolShop",
+                event = "qb-blackmarket:PistolShop",
             }
         },
         {
             header = Config.Text['SubMachineGuns'],
             icon = Config.Icons['SubMachineGuns'],
             params = {
-                event = "A-blackmarket:SubMachineGunsShop",
+                event = "qb-blackmarket:SubMachineGunsShop",
             }
         },
         {
             header = Config.Text['Shotguns'],
             icon = Config.Icons['Shotguns'],
             params = {
-                event = "A-blackmarket:ShotGunsShop",
+                event = "qb-blackmarket:ShotGunsShop",
             }
         },
         {
             header = Config.Text['AssaultWeapons'],
             icon = Config.Icons['AssaultWeapons'],
             params = {
-                event = "A-blackmarket:AssaultWeaponsShop",
+                event = "qb-blackmarket:AssaultWeaponsShop",
             }
         },
         {
             header = Config.Text['Miscellanceous'],
             icon = Config.Icons['Miscellanceous'],
             params = {
-                event = "A-blackmarket:MiscellanceousShop",
+                event = "qb-blackmarket:MiscellanceousShop",
             }
         },
     }
@@ -235,15 +235,15 @@ RegisterNetEvent('A-blackmarket:OpenShop', function()
 end)
 
 -- Events
-RegisterNetEvent("A-blackmarket:client:UpdateShop", function(shop, itemData, amount)
-    TriggerServerEvent("A-blackmarket:server:UpdateShopItems", shop, itemData, amount)
+RegisterNetEvent("qb-blackmarket:client:UpdateShop", function(shop, itemData, amount)
+    TriggerServerEvent("qb-blackmarket:server:UpdateShopItems", shop, itemData, amount)
 end)
 
-RegisterNetEvent("A-blackmarket:client:SetShopItems", function(shop, shopProducts)
+RegisterNetEvent("qb-blackmarket:client:SetShopItems", function(shop, shopProducts)
     Config.Locations[shop]["products"] = shopProducts
 end)
 
-RegisterNetEvent("A-blackmarket:client:RestockShopItems", function(shop, amount)
+RegisterNetEvent("qb-blackmarket:client:RestockShopItems", function(shop, amount)
     if not Config.Locations[shop].products then return end
     for k in pairs(Config.Locations[shop].products) do
         Config.Locations[shop].products[k].amount = Config.Locations[shop]["products"][k].amount + amount
@@ -254,7 +254,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
     createBlips()
     createPeds()
-    TriggerServerEvent('A-blackmarket:server:SetShopList')
+    TriggerServerEvent('qb-blackmarket:server:SetShopList')
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
@@ -270,7 +270,7 @@ AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
     createBlips()
     createPeds()
-    TriggerServerEvent('A-blackmarket:server:SetShopList')
+    TriggerServerEvent('qb-blackmarket:server:SetShopList')
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)
@@ -294,7 +294,7 @@ if not Config.UseTarget then
         combo:onPlayerInOut(function(isPointInside, _, zone)
             if isPointInside then
                 currentShop = zone.name
-                TriggerServerEvent('A-blackmarket:server:SetShopList')
+                TriggerServerEvent('qb-blackmarket:server:SetShopList')
                 currentData = Config.Locations[zone.name]
                 exports["qb-core"]:DrawText(Lang:t("info.open_shop"))
                 listenForControl()
