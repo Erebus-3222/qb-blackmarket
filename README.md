@@ -22,7 +22,8 @@ Money based currencies = RemoveMoney
 
 Find this section
 
-```elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "itemshop" then
+```
+elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "itemshop" then
 		local shopType = QBCore.Shared.SplitStr(fromInventory, "-")[2]
 		local itemData = ShopItems[shopType].items[fromSlot]
 		local itemInfo = QBCore.Shared.Items[itemData.name:lower()]
@@ -93,7 +94,8 @@ Find this section
 
 Replace with this
 
-```elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "itemshop" then
+```
+elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "itemshop" then
 		local shopType = QBCore.Shared.SplitStr(fromInventory, "-")[2]
 		local itemData = ShopItems[shopType].items[fromSlot]
 		local itemInfo = QBCore.Shared.Items[itemData.name:lower()]
