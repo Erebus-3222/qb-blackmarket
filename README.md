@@ -8,6 +8,17 @@ Installation
 
 Drop the folder in your resources folder ensure qb-blackmarket or place in an ensured folder.
 
+To change the money type of your blackmarket just change the following to whatever currency item or money you want
+
+```
+			if Player.Functions.RemoveItem("black_money", price, "itemshop-bought-item") then
+```
+
+If you are using money then change RemoveItem to RemoveMoney and set black_money to whatever currency you want
+
+Item based currencies = RemoveItem
+Money based currencies = RemoveMoney
+
 
 Find this section
 
