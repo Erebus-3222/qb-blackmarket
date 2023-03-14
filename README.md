@@ -77,7 +77,8 @@ Find this section
 			else
 				TriggerClientEvent('QBCore:Notify', src, "You don\'t have enough cash..", "error")
 			end
-		end```
+		end
+```
 
 Replace with this
 
